@@ -1,0 +1,27 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<form method="POST" action="controleur.php?page=article&action=update">
+			<input hidden type="text" required class="form-control" id="auteur" name="auteur" value="{{session.id}}">
+			<input hidden type="text" required class="form-control" id="id" name="id" value="{{article.id}}">
+			<div class="mb-3">
+				<label for="titre" class="form-label">Titre de l'article</label>
+				<input type="text" required class="form-control" id="titre" name="titre" value={{article.titre}}>
+			</div>
+			<div class="mb-3">
+				<label for="contenu" class="form-label">Contenu</label>
+				<textarea required class="form-control" id="contenu" name="contenu" style="height: 400px">{{article.contenu}}</textarea>
+			</div>
+			<div class="mb-3">
+				<label for="categorie" class="form-label">Catégorie</label>
+				<select name="categorie" id="categorie" class="form-control">
+					{% for categorie in categories %}
+						<option value="{{categorie.id}}" {{ article.id_categorie == categorie.id ? 'selected' : ''}}>{{categorie.nom}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<input type="submit" class="btn btn-primary" value="Sauvegarder">
+		</form>
+	</div>
+{% endblock %}

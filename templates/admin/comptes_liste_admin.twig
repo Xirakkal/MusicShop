@@ -1,0 +1,33 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<h1 class="mb-4">Liste des comptes utilisateur</h1>
+		<div class="mb-4">
+			<form action="#" method="POST" name="filtersForm" onchange="filtersForm.submit();">
+				<div class="row g-2">
+					<div class="col-md-4">
+						<input type="search" id="search" name="search" placeholder="Rechercher par pseudo" class="form-control" value="{{ activeSearch }}">
+					</div>
+					<div class="col-md-3">
+						<select class="form-control" id="date_creation" name="date_creation">
+							<option value="">Trier par date</option>
+							<option value="DESC" {{ activeSort == 'DESC' ? 'selected' : '' }}>Les plus récents</option>
+							<option value="ASC" {{ activeSort == 'ASC' ? 'selected' : '' }}>Les plus anciens</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+		{% for user in users %}
+			<div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+				<p class="fs-5 mb-0">{{user.pseudo}}</p>
+				<div class="d-flex">
+					<a href="backoffice.php?page=comptes&action=read&id={{user.id}}" class="btn btn-primary me-3">Modifier</a>
+					<a href="backoffice.php?page=comptes&action=delete&id={{user.id}}" class="btn btn-danger">Supprimer</a>
+				</div>
+			</div>
+			<hr>
+		{% endfor %}
+	</div>
+{% endblock %}

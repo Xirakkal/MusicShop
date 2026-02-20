@@ -1,0 +1,13 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+    <div class="container">
+        <h1>Confirmer la suppression</h1>
+        <p>Voulez-vous vraiment supprimer la partition "{{ partition.nom }}" ?</p>
+        <form action="controleur.php?page=partition&action=delete&id={{ partition.id }}" method="post">
+            <input type="hidden" name="confirm" value="yes">
+            <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+            <a href="controleur.php?page=partition&action=read&id={{ partition.id }}" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6"><img src="..." class="img-fluid" alt="..."></div>
+            <div class="col-lg-6 d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column">
+                    <h1>{{ cours.nom }}</h1>
+                    <p><small class="text-secondary">Par {{ cours.pseudo }}</small></p>
+                    <p class="bg-secondary p-1 px-2 rounded align-self-start">{{ cours.type_nom }}</p>
+                    <p class="bg-info p-1 px-2 rounded align-self-start text-dark">{{ cours.difficulte|capitalize }}</p>
+                    <p>{{ cours.description }}</p>
+                </div>
+                <div class="mt-5">
+                    <p class="fs-1">{{ cours.prix }} €</p>
+                    <div class="mb-2">
+                        <form action="controleur.php?page=panier&action=ajout_cours" method="POST">
+                            <input type="hidden" name="id_cours" value="{{ cours.id }}">
+                            <input type="submit" class="btn btn-primary" value="Ajouter au panier">
+                        </form>
+                    </div>
+                    <div class="mt-3">
+                        {% if (session.id == cours.id_auteur) or (session.role == 'administrateur') %}
+                            <a href="controleur.php?page=cours&action=edit&id={{cours.id}}" class="btn btn-primary me-3">Modifier</a>
+                            <a href="controleur.php?page=cours&action=delete&id={{cours.id}}" class="btn btn-danger">Supprimer</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'compte/form_compte.twig' %}
+
+{% block form %}
+	<form action="controleur.php?page=user&action=create" method="post">
+		<input hidden type="input" class="form-control" id="email" name="email" value="{{user_data.email}}">
+		<div class="mb-3">
+			<label for="mdp" class="form-label">Mot de passe</label>
+			<input type="text" required class="form-control" id="mdp" name="mdp">
+		</div>
+		<input type="submit" class="btn btn-primary me-3" value="Suivant">
+		<a href="index.php" class="link-light text-decoration-none">Annuler</a>
+	</form>
+{% endblock %}

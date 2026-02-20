@@ -1,0 +1,13 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<div class="row">
+			<div class="col col-lg-5">
+				{% block form %}
+					<!--Utilise les formulaires contenus dans les template "compte_*.twig"-->
+				{% endblock form %}
+			</div>
+		</div>
+	</div>
+{% endblock main %}

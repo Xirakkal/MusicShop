@@ -1,0 +1,18 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<h1>{{article.titre}}</h1>
+		<p>
+			<small class="text-secondary">Par
+				{{article.pseudo}}</small>
+		</p>
+		<p>{{article.contenu}}</p>
+		{% if (session.role == 'rédacteur') or (session.role == 'administrateur') %}
+			<a href="controleur.php?page=article&action=edit&id={{article.id}}" class="btn btn-primary me-3">Modifier</a>
+		{% endif %}
+		{% if (session.id == article.id_auteur) or (session.role == 'administrateur') %}
+			<a href="controleur.php?page=article&action=delete&id={{article.id}}" class="btn btn-danger">Supprimer</a>
+		{% endif %}
+	</div>
+{% endblock %}

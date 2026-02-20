@@ -1,0 +1,58 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<h1 class="mb-4">Panier</h1>
+		<div class="row">
+			<div class="col-lg-9">
+				{% for inst in instruments %}
+					<div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+						<p class="fs-5 mb-0">{{ inst.nom }} - {{inst.prix}} €</p>
+						<div class="d-flex">
+							<a href="controleur.php?page=instrument&action=read&id={{ inst.id }}" class="btn btn-primary me-3">Voir</a>
+							<form method="post" action="controleur.php?page=panier&action=remove">
+								<input type="hidden" name="type" value="instrument">
+								<input type="hidden" name="index" value="{{ loop.index0 }}">
+								<button type="submit" class="btn btn-danger">Supprimer</button>
+							</form>
+						</div>
+					</div>
+					<hr>
+				{% endfor %}
+
+				{% for p in partitions %}
+					<div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+						<p class="fs-5 mb-0">{{ p.nom }} - {{p.prix}} €</p>
+						<div class="d-flex">
+							<a href="controleur.php?page=partition&action=read&id={{ p.id }}" class="btn btn-primary me-3">Voir</a>
+							<form method="post" action="controleur.php?page=panier&action=remove">
+								<input type="hidden" name="type" value="partition">
+								<input type="hidden" name="index" value="{{ loop.index0 }}">
+								<button type="submit" class="btn btn-danger">Supprimer</button>
+							</form>
+						</div>
+					</div>
+					<hr>
+				{% endfor %}
+
+				{% for c in cours %}
+					<div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+						<p class="fs-5 mb-0">{{ c.nom }} - {{c.prix}} €</p>
+						<div class="d-flex">
+							<a href="controleur.php?page=cours&action=read&id={{ c.id }}" class="btn btn-primary me-3">Voir</a>
+							<form method="post" action="controleur.php?page=panier&action=remove">
+								<input type="hidden" name="type" value="cours">
+								<input type="hidden" name="index" value="{{ loop.index0 }}">
+								<button type="submit" class="btn btn-danger">Supprimer</button>
+							</form>
+						</div>
+					</div>
+					<hr>
+				{% endfor %}
+			</div>
+			<div class="col-lg-3">
+				<h2>Total :
+					{{total}} €</h2>
+			</div>
+		</div>
+	{% endblock %}

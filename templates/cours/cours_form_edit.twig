@@ -1,0 +1,39 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+    <div class="container">
+        <form method="POST" action="controleur.php?page=cours&action=update">
+            <input hidden type="text" required class="form-control" id="id_auteur" name="id_auteur" value="{{session.id}}">
+            <input hidden type="text" required class="form-control" id="id" name="id" value="{{cours.id}}">
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom du cours</label>
+                <input type="text" required class="form-control" id="nom" name="nom" value="{{cours.nom}}">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea required class="form-control" id="description" name="description" style="height: 300px">{{cours.description}}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="prix" class="form-label">Prix (€)</label>
+                <input type="number" step="0.01" required class="form-control" id="prix" name="prix" value="{{cours.prix}}">
+            </div>
+            <div class="mb-3">
+                <label for="difficulte" class="form-label">Difficulté</label>
+                <select name="difficulte" id="difficulte" class="form-control">
+                    <option value="débutant" {{ cours.difficulte == 'débutant' ? 'selected' : '' }}>Débutant</option>
+                    <option value="intermédiaire" {{ cours.difficulte == 'intermédiaire' ? 'selected' : '' }}>Intermédiaire</option>
+                    <option value="avancé" {{ cours.difficulte == 'avancé' ? 'selected' : '' }}>Avancé</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id_type" class="form-label">Type</label>
+                <select name="id_type" id="id_type" class="form-control">
+                    {% for type in types %}
+                        <option value="{{type.id}}" {{ cours.id_type == type.id ? 'selected' : ''}}>{{type.nom}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Sauvegarder">
+        </form>
+    </div>
+{% endblock %}

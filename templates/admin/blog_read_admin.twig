@@ -1,0 +1,33 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<h1 class="mb-3">Edition d'article</h1>
+		<form method="POST" action="backoffice.php?page=blog&action=update">
+			<input type="hidden" name="id" value="{{ article.id }}">
+			<div class="mb-3">
+				<label for="titre" class="form-label">Titre</label>
+				<input type="text" id="titre" name="titre" class="form-control" value="{{ article.titre }}">
+			</div>
+			<div class="mb-3">
+				<label for="contenu" class="form-label">Contenu</label>
+				<textarea id="contenu" name="contenu" class="form-control" rows="8">{{ article.contenu }}</textarea>
+			</div>
+			<div class="mb-3">
+				<label for="categorie" class="form-label">Catégorie</label>
+				<select id="categorie" name="categorie" class="form-control">
+					{% for c in categories %}
+						<option value="{{ c.id }}" {{ article.id_categorie == c.id ? 'selected' : '' }}>{{ c.nom }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="mb-3">
+				<label for="auteur" class="form-label">Auteur (id)</label>
+				<input type="text" id="auteur" name="auteur" class="form-control" value="{{ article.id_auteur }}">
+			</div>
+			<button type="submit" class="btn btn-primary">Sauvegarder</button>
+			<a href="backoffice.php?page=blog&action=delete&id={{ article.id }}" class="btn btn-danger ms-2">Supprimer</a>
+			<a href="backoffice.php?page=blog&action=read" class="btn btn-secondary ms-2">Retour à la liste</a>
+		</form>
+	</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<form method="POST" action="controleur.php?page=instrument&action=update">
+			<input hidden type="text" required class="form-control" id="auteur" name="auteur" value="{{session.id}}">
+			<input hidden type="text" required class="form-control" id="verification" name="verification" value="{{instrument.verification}}">
+			<input hidden type="text" required class="form-control" id="id" name="id" value="{{instrument.id}}">
+			<div class="mb-3">
+				<label for="nom" class="form-label">Nom de l'instrument</label>
+				<input type="text" required class="form-control" id="nom" name="nom" value="{{instrument.nom}}">
+			</div>
+			<div class="mb-3">
+				<label for="description" class="form-label">Description</label>
+				<textarea required class="form-control" id="description" name="description" style="height: 300px">{{instrument.description}}</textarea>
+			</div>
+			<div class="mb-3">
+				<label for="prix" class="form-label">Prix (€)</label>
+				<input type="number" step="0.01" required class="form-control" id="prix" name="prix" value="{{instrument.prix}}">
+			</div>
+			<div class="mb-3">
+				<label for="id_type" class="form-label">Type</label>
+				<select name="id_type" id="id_type" class="form-control">
+					{% for type in types %}
+						<option value="{{type.id}}" {{ instrument.id_type == type.id ? 'selected' : ''}}>{{type.nom}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<input type="submit" class="btn btn-primary" value="Sauvegarder">
+		</form>
+	</div>
+{% endblock %}

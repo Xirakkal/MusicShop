@@ -1,0 +1,20 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<h1>{{ titre }}</h1>
+		<div class="card p-4">
+			<p>Vous êtes sur le point de supprimer le compte suivant :</p>
+			<ul>
+				<li><strong>Pseudo :</strong> {{ user.pseudo }}</li>
+				<li><strong>Email :</strong> {{ user.email }}</li>
+				<li><strong>Rôle :</strong> {{ user.role }}</li>
+			</ul>
+			<form method="POST" action="backoffice.php?page=comptes&action=delete&id={{ user.id }}">
+				<input type="hidden" name="confirm" value="yes">
+				<button type="submit" class="btn btn-danger">Supprimer définitivement</button>
+				<a href="backoffice.php?page=comptes&action=read" class="btn btn-secondary ms-2">Annuler</a>
+			</form>
+		</div>
+	</div>
+{% endblock %}

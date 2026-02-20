@@ -1,0 +1,83 @@
+{% extends "base.twig" %}
+
+{% block main %}
+	<div class="container">
+		<ul class="nav nav-tabs">
+			<li class="nav-item">
+				<a class="nav-link active" href="backoffice.php?page=instrument&action=read">Instruments</a>
+			</li>
+			{% if session.role == 'administrateur' %}
+				<li class="nav-item">
+					<a class="nav-link" href="backoffice.php?page=partition&action=read">Partitions</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="backoffice.php?page=cours&action=read">Cours</a>
+				</li>
+			{% endif %}
+		</ul>
+	</div>
+	<div class="container mt-5">
+		<form action="#" method="POST" name="filtersForm" onchange="filtersForm.submit();">
+			<div class="row g-2">
+				<div class="col-lg-2">
+					<select class="form-control" id="typeFilter" name="typeFilter">
+						<option value="">Type d'instrument</option>
+						{% for type in types %}
+							<option value="{{type.id}}" {{ activeType == type.id ? 'selected' : ''}}>{{type.nom}}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-lg-2">
+					<select class="form-control" id="order" name="order">
+						<option value="">Trier par prix</option>
+						<option value="prix_asc" {{ activeOrder == 'prix_asc' ? 'selected' : '' }}>Prix croissant</option>
+						<option value="prix_desc" {{ activeOrder == 'prix_desc' ? 'selected' : '' }}>Prix décroissant</option>
+					</select>
+				</div>
+				<div class="col-lg-2">
+					<select class="form-control" id="verif" name="verif">
+						<option value="">Vérifiées et non vérifiées</option>
+						<option value="0" {{ activeVerif == "0" ? 'selected' : '' }}>Non vérifiées</option>
+						<option value="1" {{ activeVerif == "1" ? 'selected' : '' }}>Vérifiées</option>
+					</select>
+				</div>
+				<div class="col-lg-6">
+					<input type="search" id="search" name="search" placeholder="Rechercher par nom" class="form-control" value="{{activeSearch}}">
+				</div>
+			</div>
+		</form>
+		<div class="row row-cols-md-2 row-cols-lg-3 g-3 mt-3">
+			{% for instrument in instruments %}
+				<div class="col">
+					<div class="card h-100">
+						<div class="card-body d-flex flex-column">
+							<h5 class="card-title">{{ instrument.nom }}</h5>
+							<p class="text-secondary">Par
+								{{ instrument.pseudo }}</p>
+							<p class="bg-secondary p-1 px-2 rounded align-self-start">{{ instrument.type_nom }}</p>
+							{% if instrument.verification == 0 %}
+								<p class="bg-warning p-1 px-2 rounded align-self-start">En attente</p>
+							{% else %}
+								<p class="bg-success p-1 px-2 rounded align-self-start">Publiée</p>
+							{% endif %}
+							<p class="card-text">{{ instrument.description[:150] ~ (instrument.description|length > 150 ? '...' : '') }}</p>
+							<p class="fw-bold mt-auto">{{ instrument.prix }}
+								€</p>
+							<a href="controleur.php?page=instrument&action=read&id={{instrument.id}}" class="btn btn-primary mt-2">Voir</a>
+							{% if (session.role == 'administrateur') or (session.role == 'modérateur') %}
+								{% if instrument.verification == 0 %}
+									<a href="backoffice.php?page=instrument&action=publish&id={{instrument.id}}" class="btn btn-warning mt-2">Approuver</a>
+								{% else %}
+									<a href="backoffice.php?page=instrument&action=edit&id={{instrument.id}}" class="btn btn-secondary mt-2">Modifier</a>
+								{% endif %}
+								<a href="backoffice.php?page=instrument&action=delete&id={{instrument.id}}" class="btn btn-danger mt-2">Supprimer</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<p>Aucun instrument trouvé</p>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

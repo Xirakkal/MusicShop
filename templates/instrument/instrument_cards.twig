@@ -1,0 +1,52 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<div class="mb-5">
+			<form action="#" method="POST" name="filtersForm" onchange="filtersForm.submit();">
+				<div class="row g-2">
+					<div class="col-lg-2">
+						<select class="form-control" id="typeFilter" name="typeFilter">
+							<option value="">Type d'instrument</option>
+							{% for type in types %}
+								<option value="{{type.id}}" {{ activeType == type.id ? 'selected' : ''}}>{{type.nom}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-lg-2">
+						<select class="form-control" id="order" name="order">
+							<option value="">Trier par prix</option>
+							<option value="prix_asc" {{ activeOrder == 'prix_asc' ? 'selected' : '' }}>Prix croissant</option>
+							<option value="prix_desc" {{ activeOrder == 'prix_desc' ? 'selected' : '' }}>Prix décroissant</option>
+						</select>
+					</div>
+					<div class="col-lg-8">
+						<input type="search" id="search" name="search" placeholder="Rechercher par nom" class="form-control" value="{{activeSearch}}">
+					</div>
+				</div>
+			</form>
+			{% if session.user %}
+				<a href="controleur.php?page=instrument&action=new" class="btn btn-primary my-3">Mettre un instrument en vente</a>
+			{% endif %}
+		</div>
+
+		<div class="row row-cols-md-2 row-cols-lg-3 g-3">
+			{% for instrument in instruments %}
+				<div class="col">
+					<div class="card h-100">
+						<div class="card-body d-flex flex-column">
+							<h5 class="card-title">{{ instrument.nom }}</h5>
+							<p class="text-secondary">Par
+								{{ instrument.pseudo }}</p>
+							<p class="bg-secondary p-1 px-2 rounded align-self-start">{{ instrument.type_nom }}</p>
+							<p class="card-text">{{ instrument.description[:150] ~ (instrument.description|length > 150 ? '...' : '') }}</p>
+							<p class="fw-bold mt-auto">{{ instrument.prix }}
+								€</p>
+							<a href="controleur.php?page=instrument&action=read&id={{instrument.id}}" class="btn btn-primary mt-2">Voir</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

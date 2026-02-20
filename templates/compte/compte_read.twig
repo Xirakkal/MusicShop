@@ -1,0 +1,158 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<h1>Bienvenue
+			{{user.pseudo}}</h1>
+		<hr>
+		<div class="mb-3">
+			<h2>
+				<a class="dropdown-toggle link-light text-decoration-none" data-bs-toggle="collapse" href="#mesInfos" role="button">Mes infos</a>
+			</h2>
+			<div class="collapse show" id="mesInfos">
+				<form method="POST" action="controleur.php?page=user&action=update">
+					<input hidden type="input" class="form-control" id="id" name="id" value="{{user.id}}">
+					<div class="mb-3">
+						<label for="email" class="form-label">Adresse mail</label>
+						<input type="email" required class="form-control" id="email" name="email" value="{{user.email}}">
+					</div>
+					<div class="mb-3">
+						<label for="pseudo" class="form-label">Pseudo</label>
+						<input type="text" required class="form-control" id="pseudo" name="pseudo" value="{{user.pseudo}}">
+					</div>
+					<div class="mb-3">
+						<label for="mdp" class="form-label">Mot de passe</label>
+						<input type="text" required class="form-control" id="mdp" name="mdp" value="{{user.mdp}}">
+					</div>
+					<div class="mb-3">
+						<label for="mdp" class="form-label">Rôle</label>
+						<input disabled type="text" required class="form-control" id="role" name="role" value="{{user.role|capitalize}}">
+					</div>
+					<input type="submit" class="btn btn-primary me-3" value="Sauvegarder">
+				</form>
+				<a href="controleur.php?page=user&action=delete&id={{user.id}}" class="btn btn-danger mt-3">Supprimer le compte</a>
+			</div>
+		</div>
+		<hr>
+		{% if (session.role == 'rédacteur') or (session.role == 'administrateur') %}
+			<div class="mb-3">
+				<h2>
+					<a class="dropdown-toggle link-light text-decoration-none" data-bs-toggle="collapse" href="#mesPosts" role="button">Mes posts</a>
+				</h2>
+				<div class="collapse" id="mesPosts">
+					<a href="controleur.php?page=article&action=new" class="btn btn-primary my-3">Ajouter un article</a>
+					<div class="row row-cols-md-2 row-cols-lg-2 g-2">
+						{% for article in articles %}
+							<div class="col">
+								<div class="card h-100">
+									<div class="card-body d-flex flex-column">
+										<h5 class="card-title">{{article.titre}}</h5>
+										<p class="card-text">{{article.contenu[:60]}}</p>
+										<a href="controleur.php?page=article&action=read&id={{article.id}}" class="btn btn-primary mt-auto">Lire plus</a>
+										<!--If role=admin alors afficher supprimer-->
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<hr>
+		{% endif %}
+		<div class="mb-3">
+			<h2>
+				<a class="dropdown-toggle link-light text-decoration-none" data-bs-toggle="collapse" href="#mesInstruments" role="button">Mes instruments en vente</a>
+			</h2>
+			<div class="collapse" id="mesInstruments">
+				<a href="controleur.php?page=instrument&action=new" class="btn btn-primary my-3">Mettre un instrument en vente</a>
+				<div class="row row-cols-md-2 row-cols-lg-3 g-3">
+					{% for instrument in instruments %}
+						<div class="col">
+							<div class="card h-100">
+								<div class="card-body d-flex flex-column">
+									<h5 class="card-title">{{ instrument.nom }}</h5>
+									<p class="text-secondary">Par
+										{{ instrument.pseudo }}</p>
+									<p class="bg-secondary p-1 px-2 rounded align-self-start">{{ instrument.type_nom }}</p>
+									{% if instrument.verification == 0 %}
+										<p class="bg-warning p-1 px-2 rounded align-self-start">En attente</p>
+									{% else %}
+										<p class="bg-success p-1 px-2 rounded align-self-start">Publiée</p>
+									{% endif %}
+									<p class="card-text">{{ instrument.description[:150] ~ (instrument.description|length > 150 ? '...' : '') }}</p>
+									<p class="fw-bold mt-auto">{{ instrument.prix }}
+										€</p>
+									<a href="controleur.php?page=instrument&action=read&id={{instrument.id}}" class="btn btn-primary mt-2">Voir</a>
+								</div>
+							</div>
+						</div>
+					{% else %}
+						<p>Aucun instrument trouvé</p>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<hr>
+		{% if (session.role == 'musicien') or (session.role == 'administrateur')%}
+			<div class="mb-3">
+				<h2>
+					<a class="dropdown-toggle link-light text-decoration-none" data-bs-toggle="collapse" href="#mesPartitions" role="button">Mes partitions en vente</a>
+				</h2>
+				<div class="collapse" id="mesPartitions">
+					<a href="controleur.php?page=partition&action=new" class="btn btn-primary my-3">Mettre une partition en vente</a>
+					<div class="row row-cols-md-2 row-cols-lg-3 g-3">
+						{% for partition in partitions %}
+							<div class="col">
+								<div class="card h-100">
+									<div class="card-body d-flex flex-column">
+										<h5 class="card-title">{{ partition.nom }}</h5>
+										<p class="text-secondary">Par
+											{{ partition.pseudo }}</p>
+										<p class="bg-secondary p-1 px-2 rounded align-self-start">{{ partition.style_nom }}</p>
+										<p class="card-text">{{ partition.description[:150] ~ (partition.description|length > 150 ? '...' : '') }}</p>
+										<p class="fw-bold mt-auto">{{ partition.prix }}
+											€</p>
+										<a href="controleur.php?page=partition&action=read&id={{partition.id}}" class="btn btn-primary mt-2">Voir</a>
+									</div>
+								</div>
+							</div>
+						{% else %}
+							<p>Aucune partition trouvée</p>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div class="mb-3">
+				<h2>
+					<a class="dropdown-toggle link-light text-decoration-none" data-bs-toggle="collapse" href="#mesCours" role="button">Mes cours proposés</a>
+				</h2>
+				<div class="collapse" id="mesCours">
+					<a href="controleur.php?page=cours&action=new" class="btn btn-primary my-3">Proposer un cours</a>
+					<div class="row row-cols-md-2 row-cols-lg-3 g-3">
+						{% for c in cours %}
+							<div class="col">
+								<div class="card h-100">
+									<div class="card-body d-flex flex-column">
+										<h5 class="card-title">{{ c.nom }}</h5>
+										<p class="text-secondary">Par
+											{{ c.pseudo }}</p>
+										<p class="bg-secondary p-1 px-2 rounded align-self-start">{{ c.type_nom }}</p>
+										<p class="bg-info p-1 px-2 rounded align-self-start text-dark">{{ c.difficulte|capitalize }}</p>
+										<p class="card-text">{{ c.description[:150] ~ (c.description|length > 150 ? '...' : '') }}</p>
+										<p class="fw-bold mt-auto">{{ c.prix }}
+											€</p>
+										<a href="controleur.php?page=cours&action=read&id={{c.id}}" class="btn btn-primary mt-2">Voir</a>
+									</div>
+								</div>
+							</div>
+						{% else %}
+							<p>Aucun cours trouvé.</p>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<hr>
+		{% endif %}
+	</div>
+{% endblock %}

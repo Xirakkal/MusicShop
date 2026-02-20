@@ -1,0 +1,37 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6"><img src="..." class="img-fluid" alt="..."></div>
+			<div class="col-lg-6 d-flex flex-column justify-content-between">
+				<div class="d-flex flex-column">
+					<h1>{{ instrument.nom }}</h1>
+					<p>
+						<small class="text-secondary">Par
+							{{ instrument.pseudo }}</small>
+					</p>
+					<p class="bg-secondary p-1 px-2 rounded align-self-start">{{ instrument.type_nom }}</p>
+					<p>{{ instrument.description }}</p>
+				</div>
+				<div class="mt-5">
+					<p class="fs-1">
+						{{ instrument.prix }}
+						€</p>
+					<div>
+						<form action="controleur.php?page=panier&action=ajout_instrument" method="POST">
+							<input hidden type="text" id="id_instrument" name="id_instrument" value="{{instrument.id}}">
+							<input type="submit" class="btn btn-primary" value="Ajouter au panier">
+						</form>
+					</div>
+					<div class="mt-3">
+						{% if (session.id == instrument.id_auteur) or (session.role == 'administrateur') or (session.role == 'modérateur') %}
+							<a href="controleur.php?page=instrument&action=edit&id={{instrument.id}}" class="btn btn-primary me-3">Modifier</a>
+							<a href="controleur.php?page=instrument&action=delete&id={{instrument.id}}" class="btn btn-danger">Supprimer</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

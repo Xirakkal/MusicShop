@@ -1,0 +1,38 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+    <div class="container">
+        <form method="POST" action="controleur.php?page=cours&action=create">
+            <input hidden type="text" required class="form-control" id="id_auteur" name="id_auteur" value="{{session.id}}">
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom du cours</label>
+                <input type="text" required class="form-control" id="nom" name="nom">
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea required class="form-control" id="description" name="description" style="height: 300px"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="prix" class="form-label">Prix (€)</label>
+                <input type="number" step="0.01" required class="form-control" id="prix" name="prix">
+            </div>
+            <div class="mb-3">
+                <label for="difficulte" class="form-label">Difficulté</label>
+                <select name="difficulte" id="difficulte" class="form-control">
+                    <option value="débutant">Débutant</option>
+                    <option value="intermédiaire">Intermédiaire</option>
+                    <option value="avancé">Avancé</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="id_type" class="form-label">Type</label>
+                <select name="id_type" id="id_type" class="form-control">
+                    {% for type in types %}
+                        <option value="{{type.id}}">{{type.nom}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Ajouter">
+        </form>
+    </div>
+{% endblock %}

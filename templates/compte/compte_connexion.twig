@@ -1,0 +1,18 @@
+{% extends 'compte/form_compte.twig' %}
+
+{% block form %}
+	<form action="controleur.php?page=user&action=check_login" method="post">
+		<div class="mb-3">
+			<label for="email" class="form-label">Adresse mail</label>
+			<input type="email" required class="form-control" id="email" name="email">
+		</div>
+		<div class="mb-3">
+			<label for="mdp" class="form-label">Mot de passe</label>
+			<input type="text" required class="form-control" id="mdp" name="mdp">
+		</div>
+		<input type="submit" class="btn btn-primary me-3" value="Se connecter">
+		<a href="controleur.php?page=user&action=register" class="btn btn-secondary me-3">Créer un compte</a>
+		<a href="index.php" class="link-light text-decoration-none ">Annuler</a>
+
+	</form>
+{% endblock %}

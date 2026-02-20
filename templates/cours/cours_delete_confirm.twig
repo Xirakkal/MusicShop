@@ -1,0 +1,21 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+    <div class="container">
+        <h1>{{ titre }}</h1>
+        <div class="card p-4">
+            <p>Vous êtes sur le point de supprimer le cours suivant :</p>
+            <ul>
+                <li><strong>Nom :</strong> {{ cours.nom }}</li>
+                <li><strong>Type :</strong> {{ cours.type_nom }}</li>
+                <li><strong>Difficulté :</strong> {{ cours.difficulte }}</li>
+                <li><strong>Prix :</strong> {{ cours.prix }} €</li>
+            </ul>
+            <form method="POST" action="controleur.php?page=cours&action=delete&id={{ cours.id }}">
+                <input type="hidden" name="confirm" value="yes">
+                <button type="submit" class="btn btn-danger">Supprimer le cours</button>
+                <a href="controleur.php?page=cours&action=read&id={{ cours.id }}" class="btn btn-secondary ms-2">Annuler</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

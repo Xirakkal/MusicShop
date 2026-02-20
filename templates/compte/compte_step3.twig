@@ -1,0 +1,14 @@
+{% extends 'compte/form_compte.twig' %}
+
+{% block form %}
+	<form action="controleur.php?page=user&action=update" method="post">
+		<input hidden type="input" class="form-control" id="id" name="id" value="{{user_data.id}}">
+		<input hidden type="input" class="form-control" id="email" name="email" value="{{user_data.email}}">
+		<input hidden type="text" class="form-control" id="mdp" name="mdp" value="{{user_data.mdp}}">
+		<div class="mb-3">
+			<label for="pseudo" class="form-label">Pseudo</label>
+			<input type="text" required class="form-control" id="pseudo" name="pseudo">
+		</div>
+		<input type="submit" class="btn btn-primary me-3" value="Finaliser">
+	</form>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<div class="mb-5">
+			<form action="#" method="POST" name="filtersForm" onchange="filtersForm.submit();">
+				<div class="row g-2">
+					<div class="col-lg-2">
+						<select class="form-control" id="styleFilter" name="styleFilter">
+							<option value="">Tous</option>
+							{% for style in styles %}
+								<option value="{{style.id}}" {{ activeStyle == style.id ? 'selected' : ''}}>{{style.nom}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-lg-2">
+						<select class="form-control" id="order" name="order">
+							<option value="">Trier par prix</option>
+							<option value="prix_asc" {{ activeOrder == 'prix_asc' ? 'selected' : '' }}>Prix croissant</option>
+							<option value="prix_desc" {{ activeOrder == 'prix_desc' ? 'selected' : '' }}>Prix décroissant</option>
+						</select>
+					</div>
+					<div class="col-lg-8">
+						<input type="search" id="search" name="search" placeholder="Rechercher par nom" class="form-control" value="{{activeSearch}}">
+					</div>
+				</div>
+			</form>
+			{% if (session.role == 'musicien') or (session.role == 'administrateur') %}
+				<a href="controleur.php?page=partition&action=new" class="btn btn-primary my-3">Mettre une partition en vente</a>
+			{% endif %}
+		</div>
+
+		<div class="row row-cols-md-2 row-cols-lg-3 g-3">
+			{% for partition in partitions %}
+				<div class="col">
+					<div class="card h-100">
+						<div class="card-body d-flex flex-column">
+							<h5 class="card-title">{{ partition.nom }}</h5>
+							<p class="text-secondary">Par
+								{{ partition.pseudo }}</p>
+							<p class="bg-secondary p-1 px-2 rounded align-self-start">{{ partition.style_nom }}</p>
+							<p class="card-text">{{ partition.description[:150] ~ (partition.description|length > 150 ? '...' : '') }}</p>
+							<p class="fw-bold mt-auto">{{ partition.prix }}
+								€</p>
+							<a href="controleur.php?page=partition&action=read&id={{partition.id}}" class="btn btn-primary mt-2">Voir</a>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<p>Aucune partition trouvée</p>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

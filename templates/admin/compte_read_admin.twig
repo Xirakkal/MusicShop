@@ -1,0 +1,66 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+	<div class="container">
+		<h1>Compte :
+			{{ user.pseudo }}</h1>
+		<hr>
+		<div class="mb-3">
+			<h2>
+				<a class="dropdown-toggle link-light text-decoration-none" data-bs-toggle="collapse" href="#adminInfos" role="button">Infos du compte (édition admin)</a>
+			</h2>
+			<div class="collapse show" id="adminInfos">
+				<form method="POST" action="backoffice.php?page=comptes&action=update">
+					<input type="hidden" name="id" value="{{ user.id }}">
+					<div class="mb-3">
+						<label for="email" class="form-label">Adresse mail</label>
+						<input type="email" required class="form-control" id="email" name="email" value="{{ user.email }}">
+					</div>
+					<div class="mb-3">
+						<label for="pseudo" class="form-label">Pseudo</label>
+						<input type="text" required class="form-control" id="pseudo" name="pseudo" value="{{ user.pseudo }}">
+					</div>
+					<div class="mb-3">
+						<label for="mdp" class="form-label">Mot de passe</label>
+						<input type="text" class="form-control" id="mdp" name="mdp" value="{{ user.mdp }}">
+					</div>
+					<div class="mb-3">
+						<label for="role" class="form-label">Rôle</label>
+						<select id="role" name="role" class="form-control">
+							<option value="user" {{ user.role == 'user' ? 'selected' : '' }}>Utilisateur</option>
+							<option value="musicien" {{ user.role == 'musicien' ? 'selected' : '' }}>Musicien</option>
+							<option value="rédacteur" {{ user.role == 'rédacteur' ? 'selected' : '' }}>Rédacteur</option>
+							<option value="modérateur" {{ user.role == 'modérateur' ? 'selected' : '' }}>Modérateur</option>
+							<option value="administrateur" {{ user.role == 'administrateur' ? 'selected' : '' }}>Administrateur</option>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="date_creation" class="form-label">Date de création</label>
+						<input disabled type="text" class="form-control" id="date_creation" name="date_creation" value="{{ user.date_creation }}">
+					</div>
+					<button type="submit" class="btn btn-primary">Sauvegarder</button>
+					<a href="backoffice.php?page=comptes&action=delete&id={{ user.id }}" class="btn btn-danger ms-2">Supprimer le compte</a>
+				</form>
+			</div>
+		</div>
+		<hr>
+		<div class="mb-3">
+			<h2>Articles de l'utilisateur</h2>
+			<div class="row row-cols-md-2 row-cols-lg-2 g-2">
+				{% for article in articles %}
+					<div class="col">
+						<div class="card h-100">
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title">{{ article.titre }}</h5>
+								<p class="card-text">{{ article.contenu[:120] }}</p>
+								<a href="controleur.php?page=article&action=read&id={{ article.id }}" class="btn btn-primary mt-auto">Lire</a>
+							</div>
+						</div>
+					</div>
+				{% else %}
+					<p>Aucun article pour cet utilisateur.</p>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
