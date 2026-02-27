@@ -1,3 +1,13 @@
+# Installation
+
+
+Installation des packages avec Composer :
+```
+composer install
+```
+
+# Description
+
 ## Comptes
 
 - administrateur@mail.com
